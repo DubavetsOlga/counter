@@ -1,5 +1,14 @@
+body {
+  background-color: #262626;
+}
 
 .App {
   padding: 30px;
   display: flex;
+  justify-content: space-around;
+  color: lightblue;
+}
+
+.red {
+  color: red;
 }
