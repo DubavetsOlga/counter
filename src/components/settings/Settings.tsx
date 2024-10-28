@@ -1,15 +1,17 @@
 import { useState } from "react"
-import { Button } from "../button/Button"
 import { Container } from "../container/Container"
+import { Button, TextField } from "@mui/material"
 
 type SettingsProps = {
     onSettingSet: (maxValue: number, startValue: number ) => void
     onSettingChange: (isCorrect: boolean) => void
+    initialMaxValue: number
+    initialStartValue: number
 }
 
-export const Settings = ({onSettingSet, onSettingChange}: SettingsProps) => {
-    const [maxValue, setMaxValue] = useState<number>(0);
-    const [startValue, setStartValue] = useState<number>(0);
+export const Settings = ({onSettingSet, onSettingChange, initialMaxValue, initialStartValue}: SettingsProps) => {
+    const [maxValue, setMaxValue] = useState<number>(initialMaxValue);
+    const [startValue, setStartValue] = useState<number>(initialStartValue);
 
     const onSettingSetHandler = () => {
         onSettingSet(maxValue, startValue);
@@ -30,25 +32,31 @@ export const Settings = ({onSettingSet, onSettingChange}: SettingsProps) => {
             <Container>
                 <div>
                     <span>max value</span>
-                    <input
+                    <TextField
                         value={maxValue}
                         type="number"
                         onChange={(e) => maxValueChangeHandler(e.currentTarget.value)}
-                        className={maxValue < 0 || maxValue <= startValue ? "red" : ""}
+                        size="small"
+                        error={maxValue < 0 || maxValue <= startValue}
+                        sx={{backgroundColor:"white"}}
                     />
                 </div>
                 <div>
                     <span>start value</span>
-                    <input
+                    <TextField
                         value={startValue}
                         type="number"
                         onChange={(e) => startValueChangeHandler(e.currentTarget.value)}
-                        className={startValue < 0 || startValue >= maxValue ? "red" : ""}
+                        size="small"
+                        error={startValue < 0 || startValue >= maxValue}
+                        sx={{backgroundColor:"white"}}
                     />
                 </div>
             </Container>
             <Container>
                 <Button
+                    size="small"
+                    variant="contained"
                     disabled={startValue < 0 || maxValue < 0 || maxValue <= startValue}
                     onClick={onSettingSetHandler}
                 >

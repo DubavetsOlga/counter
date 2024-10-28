@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { Button } from "../button/Button"
 import { Container } from "../container/Container";
+import Button from "@mui/material/Button";
 
 type CounterType = {
     maxValue: number
@@ -29,8 +29,8 @@ export const Counter =  ({maxValue, startValue, isIncorrectValues, isValuesSet} 
                 {!isIncorrectValues && isValuesSet && <span className={value >= maxValue ? "red" : ""}>{value}</span>}
             </Container>
             <Container>
-                <Button onClick={incClickHandler} disabled={disabled}>inc</Button>
-                <Button onClick={() => setValue(startValue)}>reset</Button>
+                <Button size="small" variant="contained" onClick={incClickHandler} disabled={disabled}>inc</Button>
+                <Button size="small" variant="contained" onClick={() => setValue(startValue)}>reset</Button>
             </Container>
         </Container>
     )
