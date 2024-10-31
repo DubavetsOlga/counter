@@ -1,30 +1,32 @@
 import { useState } from "react"
 import { Container } from "../container/Container"
-import { Button, TextField } from "@mui/material"
+import { TextField } from "@mui/material"
+import { stateType } from "../../App"
+import { Button } from "../button/Button"
 
 type SettingsProps = {
-    onSettingSet: (maxValue: number, startValue: number ) => void
-    onSettingChange: (isCorrect: boolean) => void
+    onSettingSet: (maxValue: number, startValue: number) => void
+    onSettingChange: (state: stateType) => void
     initialMaxValue: number
     initialStartValue: number
 }
 
-export const Settings = ({onSettingSet, onSettingChange, initialMaxValue, initialStartValue}: SettingsProps) => {
-    const [maxValue, setMaxValue] = useState<number>(initialMaxValue);
-    const [startValue, setStartValue] = useState<number>(initialStartValue);
+export const Settings = ({ onSettingSet, onSettingChange, initialMaxValue, initialStartValue}: SettingsProps) => {
+    const [maxValue, setMaxValue] = useState(initialMaxValue);
+    const [startValue, setStartValue] = useState(initialStartValue);
 
-    const onSettingSetHandler = () => {
+    const settingsSetHandler = () => {
         onSettingSet(maxValue, startValue);
     }
 
     const maxValueChangeHandler = (value: string) => {
         setMaxValue(parseInt(value));
-        onSettingChange(parseInt(value) < 0 || parseInt(value) <= startValue);
+        onSettingChange(parseInt(value) < 0 || parseInt(value) <= startValue ? "wrong" : "unset");
     }
 
     const startValueChangeHandler = (value: string) => {
         setStartValue(parseInt(value));
-        onSettingChange(parseInt(value) < 0 || parseInt(value) >= maxValue);
+        onSettingChange(parseInt(value) < 0 || parseInt(value) >= maxValue ? "wrong" : "unset");
     }
 
     return (
@@ -55,10 +57,8 @@ export const Settings = ({onSettingSet, onSettingChange, initialMaxValue, initia
             </Container>
             <Container>
                 <Button
-                    size="small"
-                    variant="contained"
                     disabled={startValue < 0 || maxValue < 0 || maxValue <= startValue}
-                    onClick={onSettingSetHandler}
+                    onClick={settingsSetHandler}
                 >
                     set
                 </Button>

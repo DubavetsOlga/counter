@@ -5,27 +5,22 @@ import { Settings } from './components/settings/Settings';
 
 const maxValueAsString = localStorage.getItem("maxValue");
 const startValueAsString = localStorage.getItem("startValue");
-let initialMaxValue = 0; let initialStartValue = 0;
-if (maxValueAsString) initialMaxValue = JSON.parse(maxValueAsString)
-if (startValueAsString) initialStartValue = JSON.parse(startValueAsString)
+const initialMaxValue = maxValueAsString ? parseInt(maxValueAsString) : 0;
+const initialStartValue = startValueAsString ? parseInt(startValueAsString) : 0;
+
+export type stateType = "wrong" | "set" | "unset"
 
 function App() {
-    const [maxValue, setMaxValue] = useState<number>(initialMaxValue);
-    const [startValue, setStartValue] = useState<number>(initialStartValue);
-    const [isIncorrectValues, setIsIncorrectValues] = useState<boolean>(false);
-    const [isValuesSet, setIsValuesSet] = useState<boolean>(true);
+    const [maxValue, setMaxValue] = useState(initialMaxValue);
+    const [startValue, setStartValue] = useState(initialStartValue);
+    const [state, setState] = useState<stateType>("set");
 
-    const settingSetHandler = (maxValueP: number, startValueP: number) => {
-        setMaxValue(maxValueP);
-        setStartValue(startValueP);
-        setIsValuesSet(true);
-        localStorage.setItem("maxValue", JSON.stringify(maxValueP))
-        localStorage.setItem("startValue", JSON.stringify(startValueP))
-    }
-
-    const settingChangeHandler = (isCorrect: boolean) => {
-        setIsValuesSet(false);
-        setIsIncorrectValues(isCorrect);
+    const settingSetHandler = (maxValueNew: number, startValueNew: number) => {
+        setMaxValue(maxValueNew);
+        setStartValue(startValueNew);
+        setState("set")
+        localStorage.setItem("maxValue", maxValue.toString())
+        localStorage.setItem("startValue", startValue.toString())
     }
 
     return (
@@ -34,13 +29,12 @@ function App() {
                 initialMaxValue={initialMaxValue}
                 initialStartValue={initialStartValue}
                 onSettingSet={settingSetHandler}
-                onSettingChange={settingChangeHandler}
+                onSettingChange={setState}
             />
             <Counter
                 maxValue={maxValue}
                 startValue={startValue}
-                isIncorrectValues={isIncorrectValues}
-                isValuesSet={isValuesSet}
+                state={state}
             />
         </div>
     );
