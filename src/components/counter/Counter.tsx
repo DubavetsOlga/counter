@@ -7,9 +7,10 @@ type CounterType = {
     maxValue: number
     startValue: number
     state: stateType
+    onSetClick: (value: boolean) => void
 }
 
-export const Counter =  ({maxValue, startValue, state} : CounterType) => {
+export const Counter =  ({maxValue, startValue, state, onSetClick} : CounterType) => {
     const [value, setValue] = useState(0);
 
     return (
@@ -27,6 +28,9 @@ export const Counter =  ({maxValue, startValue, state} : CounterType) => {
                 </Button>
                 <Button onClick={() => setValue(startValue)}>
                     reset
+                </Button>
+                <Button onClick={() => onSetClick(true)}>
+                    set
                 </Button>
             </Container>
         </Container>

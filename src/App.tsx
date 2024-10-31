@@ -15,27 +15,32 @@ function App() {
     const [startValue, setStartValue] = useState(initialStartValue);
     const [state, setState] = useState<stateType>("set");
 
+    const [isSetting, setIsSetting] = useState(false);
+
     const settingSetHandler = (maxValueNew: number, startValueNew: number) => {
         setMaxValue(maxValueNew);
         setStartValue(startValueNew);
         setState("set")
         localStorage.setItem("maxValue", maxValue.toString())
         localStorage.setItem("startValue", startValue.toString())
+        setIsSetting(false)
     }
 
     return (
         <div className="App">
+            {isSetting ? 
             <Settings
                 initialMaxValue={initialMaxValue}
                 initialStartValue={initialStartValue}
                 onSettingSet={settingSetHandler}
                 onSettingChange={setState}
-            />
+            /> : 
             <Counter
                 maxValue={maxValue}
                 startValue={startValue}
                 state={state}
-            />
+                onSetClick={setIsSetting}
+            /> }
         </div>
     );
 }
